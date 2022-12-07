@@ -10,9 +10,10 @@ function factorial(num) {
 // Alt.
 
 function factorial(number) {
-  If (n === 1) {
+  if (number === 1) {
     return 1;
   }
+  
   return n * factorial (n - 1);
 }
 
