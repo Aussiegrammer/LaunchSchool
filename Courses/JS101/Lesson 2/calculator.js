@@ -5,58 +5,89 @@
 // Print the result to Terminal
 
 const readline = require('readline-sync');
+const MESSAGES = require('./calculator_messages.json');
+const LANGUAGE = 'fr';
 
-function prompt(message) {
+function messages(message, lang = 'en') {
+  return MESSAGES[lang][message];
+}
+
+function prompt(key) {
+  let message = messages(key, LANGUAGE);
   console.log(`=> ${message}`);
 }
 
+function promptResult(output) {
+  let message = messages('result', LANGUAGE) + ' ' + output;
+  console.log(`=> ${message}`);
+}
 function invalidNumber(number) {
   return number.trimStart() === '' || Number.isNaN(Number(number));
 }
 
-prompt('Welcome to the Calculator!');
+prompt('greeting');
 
-prompt('What is the first number?');
-let number1 = readline.question();
+let number1 = undefined;
+let number2 = undefined;
+let operation = undefined;
 
-while (invalidNumber(number1)) {
-  prompt('Hmm... that doesn\'t look like a valid number.');
+function firstNumber() {
+  prompt('firstNumber');
   number1 = readline.question();
+
+  while (invalidNumber(number1)) {
+    prompt('invalidNumber');
+    number1 = readline.question();
+  }
 }
 
-prompt('What is the second number?');
-let number2 = readline.question();
-
-while (invalidNumber(number2)) {
-  prompt('Hmm... That doesn\'t look like a valid number.');
+function secondNumber() {
+  prompt('secondNumber');
   number2 = readline.question();
+
+  while (invalidNumber(number2)) {
+    prompt('invalidNumber');
+    number2 = readline.question();
+  }
 }
 
-console.log(`${number1}, ${number2}`);
-
-prompt('What operation would you like to perform?\n' +
-            '1) Add 2) Subtract 3) Multiply 4) Divide');
-let operation = readline.question();
-
-while (!['1', '2', '3', '4'].includes(operation)) {
-  prompt('Must choose 1, 2, 3 or 4');
+function getOperation() {
+  prompt('operationQuestion');
+  prompt('operationOptions');
   operation = readline.question();
+
+  while (!['1', '2', '3', '4'].includes(operation)) {
+    prompt('operationInvalid');
+    operation = readline.question();
+  }
 }
 
-let output;
-switch (operation) {
-  case '1': // Add
-    output = Number(number1) + Number(number2);
-    break;
-  case '2': // Subtract
-    output = Number(number1) - Number(number2);
-    break;
-  case '3': // Multiply
-    output = Number(number1) * Number(number2);
-    break;
-  case '4': // Divide
-    output = Number(number1) / Number(number2);
-    break;
+function outputResult() {
+  let output;
+  switch (operation) {
+    case '1': // Add
+      output = Number(number1) + Number(number2);
+      break;
+    case '2': // Subtract
+      output = Number(number1) - Number(number2);
+      break;
+    case '3': // Multiply
+      output = Number(number1) * Number(number2);
+      break;
+    case '4': // Divide
+      output = Number(number1) / Number(number2);
+      break;
+  }
+  promptResult(output);
 }
-console.log (`The result is: ${output}`);
 
+let answer = undefined;
+
+do {
+  firstNumber();
+  secondNumber();
+  getOperation();
+  outputResult();
+  prompt('restartPrompt');
+  answer = readline.question();
+} while (answer[0].toLowerCase() === 'y');

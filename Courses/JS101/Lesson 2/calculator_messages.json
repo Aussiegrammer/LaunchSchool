@@ -1,0 +1,26 @@
+{ 
+  "en" : {
+    "greeting" : "Welcome to the Calculator!",
+    "firstNumber" : "What is the first number?",
+    "secondNumber": "What is the second number?",
+    "invalidNumber" : "Hmm... That doesn't look like a valid number",
+    "operationQuestion" : "What operation would you like to perform?",
+    "operationOptions" : "1) Add 2) Subtract 3) Multiply 4) Divide",
+    "operationInvalid" : "Must choose 1, 2, 3 or 4.",
+    "result" : "The result is:",
+    "restartPrompt" : "Would you like to calculate another set of numbers? (y/n)"
+  },
+  "fr" : {
+    "greeting" : "Bienvenue dans la calculatrice! ",
+    "firstNumber" : "Quel est le premier numéro?",
+    "secondNumber": "Quel est le deuxième numéro?",
+    "invalidNumber" : "Hmm... Cela ne ressemble pas à un numéro valide",
+    "operationQuestion" : "Quelle opération souhaitez-vous effectuer?",
+    "operationOptions" : "1) Additionner 2) Soustraire 3) Multiplier 4) Diviser",
+    "operationInvalid" : "Vous devez choisir 1, 2, 3 ou 4.",
+    "result" : "Le résultat est:",
+    "restartPrompt" : "Souhaitez-vous calculer un autre ensemble de nombres? (y/n)"
+
+  }
+}
+
