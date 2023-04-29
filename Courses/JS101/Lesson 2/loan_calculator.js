@@ -19,24 +19,27 @@ function prompt(message) {
   console.log(`=> ${message}`);
 }
 
-prompt("Welcome to the loan Calculator!");
 
+prompt("Welcome to the loan Calculator!");
 
 prompt("Please enter the total loan amount");
 let loanAmount = Number(readline.question());
 
 prompt("Please enter the interest rate per annum");
-let interestRateYearly = parseFloat(readline.question());
+let interestRate = parseFloat(readline.question());
 
 prompt("Finally, please enter the loan duration in years");
 let loanDurationYears = Number(readline.question());
 
+let interestRateYearly = interestRate / 100;
 let interestRateMonthly = interestRateYearly / 12;
-let loanDurationMonths = loanDurationYears / 12;
+let loanDurationMonths = loanDurationYears * 12;
 
 let monthlyPayment = loanAmount * (interestRateMonthly /
     (1 - Math.pow((1 + interestRateMonthly), (-loanDurationMonths))));
 
-prompt(`Your weekly interest payment is ${parseFloat(monthlyPayment) / 4}`);
-prompt(`Your monthly interest payment is ${monthlyPayment}`);
-prompt(`Your total payment is ${monthlyPayment * loanDurationMonths}`);
+prompt(`Your weekly interest payment is $${(parseFloat(monthlyPayment) / 4).toFixed(2)}`);
+prompt(`Your monthly interest payment is $${(monthlyPayment).toFixed(2)}`);
+prompt(`Your total payment is $${(monthlyPayment * loanDurationMonths).toFixed(2)}`);
+prompt(`Your total interest paid is $${((monthlyPayment * loanDurationMonths) - loanAmount).toFixed(2)}`);
+
