@@ -1,22 +1,11 @@
-/* let m = p * (j / (1 - Math.pow((1 + j), (-n))));
-
-
-    m = monthly payment
-    p = loan amount
-    j = monthly interest rate
-    n = loan duration in months
-*/
-
-// Ask the user for the total loan amount in dollars
-// Ask the user for the interest rate per annum
-// >> Convert the per annum interest rate into a monthly percentage
-// Ask the user for the loan duration in years
-// >> Convert the loan duration into months
-
 const readline = require('readline-sync');
 
 function prompt(message) {
   console.log(`=> ${message}`);
+}
+
+function printLine() {
+  prompt('--------------------------------------');
 }
 
 function isInvalidNumber(number) {
@@ -25,26 +14,45 @@ function isInvalidNumber(number) {
          Number.isNaN(Number(number));
 }
 
+function trimSymbols(input) {
+  if (input.at(0) === '$') {
+    return input.slice(1);
+
+  } else if (input.at(-1) === '%') {
+    return input.slice(0, -1);
+
+  } else {
+    return input;
+  }
+}
+
 function getLoanAmount() {
   prompt("Please enter the total loan amount");
   let loanAmount = readline.question();
+  loanAmount = trimSymbols(loanAmount);
 
   while (isInvalidNumber(loanAmount)) {
     prompt('Must enter a positive number');
     loanAmount = readline.question();
+    loanAmount = trimSymbols(loanAmount);
   }
   return Number(loanAmount);
 }
 
 function getMonthlyInterestRate() {
   prompt("Please enter the interest rate per annum");
-  prompt("Example: 5 for 5% or 2.5 for 2.5%");
   let interestRate = readline.question();
+  interestRate = trimSymbols(interestRate);
 
   while (isInvalidNumber(interestRate)) {
-    prompt('Must enter a positive number without a % sign');
+    prompt('Must enter a positive number');
     interestRate = readline.question();
+    interestRate = trimSymbols(interestRate);
   }
+  if (interestRate === '0') {
+    return 0;
+  }
+
   let yearlyInterestRate = parseFloat(interestRate) / 100;
   let monthlyInterestRate = yearlyInterestRate / 12;
   return monthlyInterestRate;
@@ -62,21 +70,42 @@ function getLoanDuration() {
 }
 
 function calculateMonthlyPayment(loanAmount, interestRate, loanDuration) {
-  return loanAmount * (interestRate /
-         (1 - Math.pow((1 + monthlyInterest), (-loanDuration))));
+  if (interestRate === 0) {
+    return loanAmount / loanDuration;
+  } else {
+    return loanAmount * (interestRate /
+         (1 - Math.pow((1 + interestRate), (-loanDuration))));
+  }
+}
+
+function outputResults(loanAmount, monthlyPayment, loanDurationMonths) {
+  prompt(`Your weekly payment is $${(parseFloat(monthlyPayment) / 4).toFixed(2)}`);
+  prompt(`Your monthly payment is $${(monthlyPayment).toFixed(2)}`);
+  prompt(`Your total payment is $${(monthlyPayment * loanDurationMonths).toFixed(2)}`);
+  prompt(`Your total interest paid is $${((monthlyPayment * loanDurationMonths) - loanAmount).toFixed(2)}`);
 }
 
 prompt("Welcome to the loan Calculator!");
-console.log('--------------------------------------');
 
-let loanAmount = getLoanAmount();
-let monthlyInterestRate = getMonthlyInterestRate();
-let loanDurationMonths = getLoanDuration();
 
-let monthlyPayment = calculateMonthlyPayment(loanAmount, monthlyInterestRate, loanDurationMonths);
+while (true) {
+  printLine();
 
-prompt(`Your weekly interest payment is $${(parseFloat(monthlyPayment) / 4).toFixed(2)}`);
-prompt(`Your monthly interest payment is $${(monthlyPayment).toFixed(2)}`);
-prompt(`Your total payment is $${(monthlyPayment * loanDurationMonths).toFixed(2)}`);
-prompt(`Your total interest paid is $${((monthlyPayment * loanDurationMonths) - loanAmount).toFixed(2)}`);
+  let loanAmount = getLoanAmount();
+  let monthlyInterestRate = getMonthlyInterestRate();
+  let loanDurationMonths = getLoanDuration();
 
+  let monthlyPayment = calculateMonthlyPayment(loanAmount,
+    monthlyInterestRate, loanDurationMonths);
+
+  printLine();
+  outputResults(loanAmount, monthlyPayment, loanDurationMonths);
+  printLine();
+
+  prompt('Another calculation?');
+  let answer = readline.question().toLowerCase();
+  while (answer[0] !== 'n' && answer[0] !== 'y') {
+    prompt('Please enter "y" or "n"');
+    answer = readline.question().toLowerCase();
+  }
+}
