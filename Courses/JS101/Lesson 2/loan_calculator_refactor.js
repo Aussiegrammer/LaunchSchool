@@ -105,10 +105,10 @@ function askToRepeatCalc() {
     prompt('Please enter "y" or "n"');
     answer = readline.question().toLowerCase();
   }
-  return answer[0]
+  return answer[0];
 }
 
-function runCalculator();
+function runCalculator() {
   while (true) {
     printLine();
 
@@ -126,6 +126,7 @@ function runCalculator();
     if (askToRepeatCalc() === 'n') break;
 
     clearScreen();
+  }
 }
 
 clearScreen();
