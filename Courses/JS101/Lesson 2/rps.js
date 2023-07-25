@@ -6,7 +6,7 @@ const BEAT_BY_PAPER = ['rock', 'spock'];
 const BEAT_BY_SCISSORS = ['paper', 'lizard'];
 const BEAT_BY_LIZARD = ['paper', 'spock'];
 const BEAT_BY_SPOCK = ['scissors', 'rock'];
-const SCORE_TO_WIN = 3
+const SCORE_TO_WIN = 3;
 
 function prompt(message)  {
   console.log(`=> ${message}`);
@@ -87,43 +87,43 @@ function displayRoundWinner(player, computer) {
 
 function tallyPlayerScore(player, computer) {
   if (evaluateGame(player, computer)) {
-  return  true;
+    return  true;
   } else return false;
 }
 
 function tallyComputerScore(player, computer) {
   if (evaluateGame(computer, player)) {
-  return true;
+    return true;
   } else return false;
 }
 
 function displayScore(playerScore, computerScore) {
-  prompt(`The score is -> Player: ${playerScore} | Computer: ${computerScore}`)
+  prompt(`The score is -> Player: ${playerScore} | Computer: ${computerScore}`);
 }
 
 function checkScore(score) {
   if (score >= SCORE_TO_WIN) {
-    return true
+    return true;
   } else {
-    return false 
+    return false;
   }
 }
 
 function displayGrandWinner(playerScore, computerScore) {
   if (checkScore(playerScore)) {
-    prompt("You win the game!")
+    prompt("You win the game!");
   } else if (checkScore(computerScore)) {
-    prompt("Computer wins the game!")
+    prompt("Computer wins the game!");
   }
 }
 
 function checkGameOver(playerScore, computerScore) {
   if (checkScore(playerScore)) {
-    return true
+    return true;
   } else if (checkScore(computerScore)) {
-    return true 
-  } else { 
-    return false
+    return true;
+  } else {
+    return false;
   }
 }
 
@@ -138,8 +138,8 @@ function playAgainPrompt() {
 }
 
 function runRounds() {
-  let playerScore = 0 
-  let computerScore = 0
+  let playerScore = 0;
+  let computerScore = 0;
 
   while (true) {
     let playerChoice = getPlayerChoice();
@@ -147,24 +147,18 @@ function runRounds() {
 
     displayChoices(playerChoice, computerChoice);
     displayRoundWinner(playerChoice, computerChoice);
-    
-    console.log(tallyPlayerScore(playerChoice, computerChoice));
-    console.log(tallyComputerScore(playerChoice, computerChoice));
 
-    if (tallyPlayerScore(playerChoice, computerChoice)); {
-      console.log('here!');
+    if (tallyPlayerScore(playerChoice, computerChoice)) {
       playerScore++;
-    }
-    if (tallyComputerScore(playerChoice, computerChoice)); {
-      console.log('here too!');
+    } else if (tallyComputerScore(playerChoice, computerChoice)) {
       computerScore++;
     }
 
     displayScore(playerScore, computerScore);
-    
+
     displayGrandWinner(playerScore, computerScore);
     printLine();
-    if (checkGameOver()) break; 
+    if (checkGameOver(playerScore, computerScore)) break;
   }
 }
 
@@ -172,12 +166,11 @@ function runGame() {
   printLine();
   while (true) {
     runRounds();
-      if (playAgainPrompt() === 'n') break;
-      clearScreen();
-   }
+    if (playAgainPrompt() === 'n') break;
+    clearScreen();
+  }
 }
 
 clearScreen();
 welcomeMessage();
 runGame();
-
