@@ -6,6 +6,7 @@ const BEAT_BY_PAPER = ['rock', 'spock'];
 const BEAT_BY_SCISSORS = ['paper', 'lizard'];
 const BEAT_BY_LIZARD = ['paper', 'spock'];
 const BEAT_BY_SPOCK = ['scissors', 'rock'];
+const SCORE_TO_WIN = 3
 
 function prompt(message)  {
   console.log(`=> ${message}`);
@@ -74,21 +75,55 @@ function displayChoices(choice, computerChoice) {
   prompt(`You chose ${choice}, computer chose ${computerChoice}`);
 }
 
-function displayWinner(player, computer) {
+function displayRoundWinner(player, computer) {
   if (evaluateGame(player, computer)) {
-    prompt("You win!");
+    prompt("You win the round!");
   } else if (evaluateGame(computer, player))  {
-    prompt("Computer wins!");
+    prompt("Computer wins the round!");
   } else {
     prompt("It's a tie!");
   }
 }
 
-function tallyScore(player, computer, playerScore, computerScore) {
+function tallyPlayerScore(player, computer) {
   if (evaluateGame(player, computer)) {
-    return playerScore++;
-  } else if (evaluateGame(computer, player)) {
-    return computerScore++;
+  return  true;
+  } else return false;
+}
+
+function tallyComputerScore(player, computer) {
+  if (evaluateGame(computer, player)) {
+  return true;
+  } else return false;
+}
+
+function displayScore(playerScore, computerScore) {
+  prompt(`The score is -> Player: ${playerScore} | Computer: ${computerScore}`)
+}
+
+function checkScore(score) {
+  if (score >= SCORE_TO_WIN) {
+    return true
+  } else {
+    return false 
+  }
+}
+
+function displayGrandWinner(playerScore, computerScore) {
+  if (checkScore(playerScore)) {
+    prompt("You win the game!")
+  } else if (checkScore(computerScore)) {
+    prompt("Computer wins the game!")
+  }
+}
+
+function checkGameOver(playerScore, computerScore) {
+  if (checkScore(playerScore)) {
+    return true
+  } else if (checkScore(computerScore)) {
+    return true 
+  } else { 
+    return false
   }
 }
 
@@ -102,21 +137,44 @@ function playAgainPrompt() {
   return answer;
 }
 
-function runGame() {
-  printLine();
+function runRounds() {
+  let playerScore = 0 
+  let computerScore = 0
 
   while (true) {
     let playerChoice = getPlayerChoice();
     let computerChoice = getComputerChoice();
 
     displayChoices(playerChoice, computerChoice);
-    displayWinner(playerChoice, computerChoice);
+    displayRoundWinner(playerChoice, computerChoice);
+    
+    console.log(tallyPlayerScore(playerChoice, computerChoice));
+    console.log(tallyComputerScore(playerChoice, computerChoice));
 
+    if (tallyPlayerScore(playerChoice, computerChoice)); {
+      console.log('here!');
+      playerScore++;
+    }
+    if (tallyComputerScore(playerChoice, computerChoice)); {
+      console.log('here too!');
+      computerScore++;
+    }
+
+    displayScore(playerScore, computerScore);
+    
+    displayGrandWinner(playerScore, computerScore);
     printLine();
-
-    if (playAgainPrompt() === 'n') break;
-    clearScreen();
+    if (checkGameOver()) break; 
   }
+}
+
+function runGame() {
+  printLine();
+  while (true) {
+    runRounds();
+      if (playAgainPrompt() === 'n') break;
+      clearScreen();
+   }
 }
 
 clearScreen();
