@@ -30,7 +30,7 @@ function getPlayerChoice() {
 
   if (choice === 's') {
     prompt("Did you mean (sc)issors or (sp)ock?");
-    choice = readline.question();
+    choice = readline.question().toLowerCase();
   }
 
   while (!validatePlayerChoice(choice)) {
@@ -42,12 +42,9 @@ function getPlayerChoice() {
 }
 
 function validatePlayerChoice(choice) {
-  if ((VALID_CHOICES.includes(choice)) ||
-      (CHOICE_SHORTCUTS.includes(choice))) {
-    return true;
-  } else {
-    return false;
-  }
+  let validChoice = VALID_CHOICES.includes(choice);
+  let validShortcut = CHOICE_SHORTCUTS.includes(choice);
+  return (validChoice || validShortcut);
 }
 
 function sanitizePlayerChoice(choice) {

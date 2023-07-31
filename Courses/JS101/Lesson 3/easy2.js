@@ -23,5 +23,21 @@ console.log(numbers); // [ 5, 4, 3, 2, 1 ]
 
 // Note: toReversed is the perfect solution for this, but does not exist in the current version of Node, need to up to date first.
 
+
+
 // Q3. Given a number and an array, determine whether the number is included in the array.
+
+let numbers2 = [1, 2, 3, 4, 5, 15, 16, 17, 95, 96, 99];
+
+let number1 = 8;  // false
+let number2 = 95; // true
+
+console.log(numbers2.includes(number1));
+console.log(numbers2.includes(number2));
+
+
+// Q4. Starting with the string: show two different
+// ways to put the expected "Four score and " in front of it.
+
+let famousWords = "seven years ago...";
 
